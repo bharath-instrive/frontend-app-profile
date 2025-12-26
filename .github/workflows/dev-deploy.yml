@@ -1,0 +1,31 @@
+name: Frontend App Profile Dev Deploy
+
+on:
+  push:
+    branches:
+      - main
+  
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Connect to EC2 and deploy
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/lexconx/frontend-app-profile
+            git pull
+            echo "Deploying Frontend App Profile..."
+            cd ..
+            source py-venv/bin/activate
+            echo "Building MFE..."
+            tutor images build mfe     
+            echo "Rebooting MFE..."
+            tutor local reboot -d mfe       
+            echo "Frontend App Profile deployed successfully."

@@ -274,7 +274,7 @@ const ProfilePage = ({ params }) => {
                       : (
                         <FormattedMessage
                           id="profile.profile.information"
-                          defaultMessage="Profile information"
+                          defaultMessage="Profile informations"
                           description="heading for the editable profile section"
                         />
                       )}
